@@ -72,8 +72,33 @@ NeuralNetwork::NeuralNetwork(const vector<unsigned> &setup){
 //work in progress to initialize a neural network from file
 NeuralNetwork::NeuralNetwork(const string &file){
   ifstream input(file.c_str());
+  if(input.is_open()){
+    vector<unsigned> setup;
+    string line;
+    getline(input, line);
+    istringstream ss;
+    ss.str(line);
+    unsigned value;
+    while(ss >> value){
+      setup.push_back(value);
+    }
+    *this = NeuralNetwork(setup);
 
-  //however I wanna make my file
+    for(unsigned i = 0; i < m_network.size(); ++i){
+      for(unsigned j = 0; j < m_network[i].size(); ++j){
+        for(unsigned k = 0; k < m_network[i][j].weights.size(); ++k){
+          input >> m_network[i][j].weights[k];
+          input >> m_network[i][j].d_weights[k];
+        }
+      }
+      m_network[i].back().m_value = 1.0;
+    }
+
+    input.close();
+  }
+  else{
+    cout << "Input File Failed" << endl;
+  }
 }
 
 //uses a vector of input values to create output values
@@ -176,7 +201,16 @@ void NeuralNetwork::save_net(const string &file) const{
       output << m_network[i].size() - 1 << " ";
     output << endl;
 
-
+    for(unsigned i = 0; i < m_network.size(); ++i){
+      for(unsigned j = 0; j < m_network[i].size(); ++j){
+        for(unsigned k = 0; k < m_network[i][j].weights.size(); ++k){
+          output << m_network[i][j].weights[k] << " " << m_network[i][j].d_weights[k] << " ";
+        }
+        output << endl;
+      }
+      output << endl;
+    }
+    output.close();
   }
   else{
     cout << "Failed to Save Neural Network" << endl;
