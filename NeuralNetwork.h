@@ -7,6 +7,7 @@
 #include <sstream>
 using namespace std;
 
+//class to store training data WIP
 class TrainingData{
 public:
   TrainingData(const string &);
@@ -18,6 +19,7 @@ private:
   ifstream m_data;
 };
 
+//struct to store neuron data
 struct Neuron{
   Neuron(unsigned);
 
@@ -27,8 +29,10 @@ struct Neuron{
   static double rand_doub();
 };
 
+//stores multiple neurons
 typedef vector<Neuron> layer;
 
+//the neural network
 class NeuralNetwork{
 public:
   NeuralNetwork(const vector<unsigned> &);
