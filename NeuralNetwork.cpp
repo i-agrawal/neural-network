@@ -1,0 +1,158 @@
+#include "NeuralNetwork.h"
+
+TrainingData::TrainingData(const string &file){
+  m_data.open(file.c_str());
+}
+
+void TrainingData::get_setup(vector<unsigned> &setup){
+  //however I wanna make my file
+}
+
+void TrainingData::get_next_inputs(vector<double> &input_vals){
+  //however I wanna make my file
+}
+
+void TrainingData::get_target_outputs(vector<double> &target_vals){
+  //however I wanna make my file
+}
+
+
+Neuron::Neuron(unsigned outs){
+  for(unsigned i = 0; i < outs; ++i){
+    weights.push_back(rand_doub());
+    d_weights.push_back(0.0);
+  }
+}
+double Neuron::rand_doub(){
+  return rand() / double(RAND_MAX);
+}
+
+double NeuralNetwork::eta = 0.15;
+double NeuralNetwork::alpha = 0.5;
+double NeuralNetwork::error_smoothing = 100.0;
+
+double NeuralNetwork::act_function(double x){
+  return tanh(x);
+}
+double NeuralNetwork::act_function_prime(double x){
+  return 1.0 - x * x;
+}
+
+//uses a vector with a number of neurons corresponding to each layer
+NeuralNetwork::NeuralNetwork(const vector<unsigned> &setup){
+  //for loop to create each layer
+  for(unsigned i = 0; i < setup.size(); ++i){
+    //add a layer to the vector holding our layers
+    m_network.push_back(layer());
+    //find the number of outputs in the next layer excpet for last layer
+    unsigned n_outs = 0;
+    if(i != setup.size() - 1)
+      n_outs = setup[i + 1];
+    else
+      n_outs = 0;
+
+    //add a Neuron with the amound of weights needed to output to the next layer
+    //add an extra Neuron (<=) for the bias
+    for(unsigned j = 0; j <= setup[i]; ++j)
+      m_network[i].push_back(Neuron(n_outs));
+
+    //the bias always has a value fo 1.0
+    m_network[i].back().m_value = 1.0;
+  }
+}
+//work in progress
+NeuralNetwork::NeuralNetwork(const string &file){
+  ifstream input(file.c_str());
+
+  //however I wanna make my file
+}
+
+//uses a vector of input values to create output values
+void NeuralNetwork::feed_forward(const vector<double> &input_vals){
+  //for loop that sets the values for the input layer corresponding to the inputted values
+  for(unsigned i = 0; i < m_network[0].size() - 1; ++i){
+    m_network[0][i].m_value = input_vals[i];
+  }
+
+  //goes through each layer
+  for(unsigned i = 1; i < m_network.size(); ++i){
+    //goes through each neuron in the layer
+    for(unsigned j = 0; j < m_network[i].size() - 1; ++j){
+      //finds the value by adding up all the neurons in the previous layer's value * the specific weight
+      double sum = 0.0;
+      for(int k = 0; k < m_network[i - 1].size(); ++k){
+        sum += m_network[i - 1][k].m_value * m_network[i - 1][k].weights[j];
+      }
+      //find the neurons value using the activation function
+      m_network[i][j].m_value = act_function(sum);
+    }
+  }
+}
+
+void NeuralNetwork::back_prop(const vector<double> &target_vals){
+  m_error = 0.0;
+  layer &output_layer = m_network.back();
+
+  for(unsigned i = 0; i < output_layer.size() - 1; ++i){
+    double delta = target_vals[i] - output_layer[i].m_value;
+    m_error += delta * delta;
+  }
+  m_error /= output_layer.size() - 1;
+  m_error = sqrt(m_error);
+
+  m_ave_error = (m_ave_error * error_smoothing + m_error) / (error_smoothing + 1);
+
+  for(unsigned i = 0; i < output_layer.size() - 1; ++i){
+    double delta = target_vals[i] - output_layer[i].m_value;
+    output_layer[i].m_gradient = delta * act_function_prime(output_layer[i].m_value);
+  }
+
+  for(unsigned i = m_network.size() - 2; i > 0; --i){
+    for(unsigned j = 0; j < m_network[i].size(); ++j){
+      double dow = 0.0;
+      for(unsigned k = 0; k < m_network[i + 1].size() - 1; ++k){
+        dow += m_network[i][j].weights[k] * m_network[i + 1][k].m_gradient;
+      }
+      m_network[i][j].m_gradient = dow * act_function_prime(m_network[i][j].m_value);
+    }
+  }
+
+  for(unsigned i = m_network.size() - 1; i > 0; --i){
+    for (unsigned j = 0; j < m_network[i].size() - 1; ++j) {
+      for(unsigned k = 0; k < m_network[i - 1].size(); ++k){
+        double od_weight = m_network[i - 1][k].d_weights[j];
+        double nd_weight = eta * m_network[i - 1][k].m_value * m_network[i][j].m_gradient + alpha * od_weight;
+        m_network[i - 1][k].d_weights[j] = nd_weight;
+        m_network[i - 1][k].weights[j] += nd_weight;
+      }
+    }
+  }
+}
+
+void NeuralNetwork::get_results(vector<double> &result_vals) const{
+  result_vals.clear();
+  for(unsigned i = 0; i < m_network.back().size() - 1; ++i){
+    result_vals.push_back(m_network.back()[i].m_value);
+  }
+}
+
+//work in progress
+void NeuralNetwork::save_net(const string &file) const{
+  ofstream output(file.c_str());
+  if(output.is_open()){
+    for(unsigned i = 0; i < m_network.size(); ++i)
+      output << m_network[i].size() - 1 << " ";
+    output << endl;
+
+
+  }
+  else{
+    cout << "Failed to Save Neural Network" << endl;
+  }
+}
+
+
+
+
+
+//space
