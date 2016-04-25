@@ -151,6 +151,9 @@ void NeuralNetwork::save_net(const string &file) const{
   }
 }
 
+double NeuralNetwork::get_error() const{
+  return m_error;
+}
 
 
 

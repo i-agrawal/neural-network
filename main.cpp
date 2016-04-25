@@ -34,7 +34,7 @@ int main(int argc, char ** argv){
     input_vals.push_back(rand() % 2);
     net.feed_forward(input_vals);
     net.get_results(result_vals);
-    //cout << "Average Error For Pass " << i+1 << ": " << net.get_error() << endl;
+    cout << "Average Error For Pass " << i+1 << ": " << net.get_error() << endl;
     target_vals.clear();
     double x = 0;
     if(input_vals[0] == input_vals[1])
@@ -59,18 +59,9 @@ int main(int argc, char ** argv){
     net.get_results(result_vals);
     cout << "Your Results: ";
     for(unsigned i = 0; i < result_vals.size() - 1; ++i){
-      cout << result_vals[i] << ", ";
+      cout << setprecision(1) << fixed << result_vals[i] << ", ";
     }
     cout << result_vals.back() << endl;
-
-    cout << "What Were The Target Values: ";
-    target_vals.clear();
-    for(unsigned i = 0; i < setup.back(); ++i){
-      double target;
-      cin >> target;
-      target_vals.push_back(target);
-    }
-    net.back_prop(target_vals);
   }
 
   return 0;
