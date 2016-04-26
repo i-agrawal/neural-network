@@ -30,6 +30,8 @@ int main(int argc, char ** argv){
 //     cout << "Average Error For Pass " << npass << ": " << net.get_error() << endl;
 //   }
 //
+//   tdata.close();
+//
 //   basic traing cycle for xor over 100000 times
   for(unsigned i = 0; i < 100000; ++i){
     //get input
@@ -64,11 +66,13 @@ int main(int argc, char ** argv){
 
   //check to see how good the neural net actually is
   //put in 2 numbers, 1's and 0's,
+  //it should produce a value very close to the truth table below
   /*
-    0  0  |  0
-    0  1  |  1
-    1  0  |  1
-    1  1  |  0
+    I1  I2   OUT
+    0   0  |  0
+    0   1  |  1
+    1   0  |  1
+    1   1  |  0
   */
   while(true){
     cout << "Try Inputting: ";

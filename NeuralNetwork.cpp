@@ -5,15 +5,45 @@ TrainingData::TrainingData(const string &file){
 }
 
 void TrainingData::get_setup(vector<unsigned> &setup){
-  //however I wanna make my file
+  setup.clear();
+  string line;
+  getline(m_data, line);
+  istringstream ss;
+  ss.str(line);
+  unsigned value;
+  while(ss >> value)
+    setup.push_back(value);
+  m_data >> setup[0];
+  m_data >> setup.back();
 }
 
 void TrainingData::get_next_inputs(vector<double> &input_vals){
-  //however I wanna make my file
+  input_vals.clear();
+
+  double value;
+  for(unsigned i = 0; i < m_inputs; ++i){
+    m_data >> value;
+    input_vals.push_back(value);
+  }
+
 }
 
 void TrainingData::get_target_outputs(vector<double> &target_vals){
-  //however I wanna make my file
+  target_vals.clear();
+
+  double value;
+  for(unsigned i = 0; i < m_outputs; ++i){
+    m_data >> value;
+    target_vals.push_back(value);
+  }
+}
+
+bool TrainingData::eof(){
+  return m_data.eof();
+}
+
+void TrainingData::close(){
+  m_data.close();
 }
 
 

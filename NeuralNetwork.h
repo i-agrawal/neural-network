@@ -15,8 +15,10 @@ public:
   void get_setup(vector<unsigned> &);
   void get_next_inputs(vector<double> &);
   void get_target_outputs(vector<double> &);
+  void close();
 private:
   ifstream m_data;
+  unsigned m_inputs, m_outputs;
 };
 
 //struct to store neuron data
