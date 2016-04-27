@@ -1,13 +1,9 @@
 #include "NeuralNetwork.h"
+#include <iomanip>
 
 int main(int argc, char ** argv){
   //makes a nnet of 2 input, 2 hidden layers with 3 neurons each, and 1 output
-  vector<unsigned> setup;
-  setup.push_back(2);
-  setup.push_back(3);
-  setup.push_back(3);
-  setup.push_back(1);
-  NeuralNetwork net(setup);
+  NeuralNetwork net("netsave.txt");
   vector<double> input_vals, target_vals, result_vals;
 
 // Will be used once training data is complete
@@ -33,7 +29,7 @@ int main(int argc, char ** argv){
 //   tdata.close();
 //
 //   basic traing cycle for xor over 100000 times
-  for(unsigned i = 0; i < 100000; ++i){
+  for(unsigned i = 0; i < 1000000; ++i){
     //get input
     input_vals.clear();
     input_vals.push_back(rand() % 2);
@@ -76,8 +72,9 @@ int main(int argc, char ** argv){
   */
   while(true){
     cout << "Try Inputting: ";
+    unsigned sz = input_vals.size();
     input_vals.clear();
-    for(unsigned i = 0; i < setup[0]; ++i){
+    for(unsigned i = 0; i < sz; ++i){
       double input;
       cin >> input;
       input_vals.push_back(input);
@@ -86,10 +83,10 @@ int main(int argc, char ** argv){
     net.feed_forward(input_vals);
     net.get_results(result_vals);
     cout << "Your Results: ";
-    for(unsigned i = 0; i < result_vals.size() - 1; ++i){
-      cout << result_vals[i] << ", ";
+    for(unsigned i = 0; i < result_vals.size(); ++i){
+      cout << setprecision(8) << fixed << result_vals[i] << " ";
     }
-    cout << result_vals.back() << endl;
+    cout << endl;
   }
 
   return 0;
