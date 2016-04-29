@@ -1,3 +1,6 @@
+#ifndef __NNETWORK_H__
+#define __NNETWORK_H__
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -53,3 +56,5 @@ private:
   double        m_error, m_ave_error;
   vector<layer> m_network;
 };
+
+#endif
