@@ -66,14 +66,14 @@ double NeuralNetwork::eta = 0.15;
 double NeuralNetwork::alpha = 0.5;
 double NeuralNetwork::error_smoothing = 100.0;
 
-//the activation function as hyperbolic tangent
+//the activation function as a sigmoid function
 double NeuralNetwork::act_function(double x){
-  return tanh(x);
+  return 1.0 / (1.0 + exp(-x));
 }
 
 //the derivative of the activation function rounded to 1 - x^2 for speed rather than 1 - (tanh(x))^2
 double NeuralNetwork::act_function_prime(double x){
-  return 1.0 - x * x;
+  return act_function(x) * (1.0 - act_function(x));
 }
 
 //uses a vector with a number of neurons corresponding to each layer

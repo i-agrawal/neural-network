@@ -3,6 +3,11 @@
 
 int main(int argc, char ** argv){
   //makes a nnet of 2 input, 2 hidden layers with 3 neurons each, and 1 output
+  // vector<unsigned> setup;
+  // setup.push_back(2);
+  // setup.push_back(3);
+  // setup.push_back(3);
+  // setup.push_back(1);
   NeuralNetwork net("netsave.txt");
   vector<double> input_vals, target_vals, result_vals;
 
@@ -28,7 +33,7 @@ int main(int argc, char ** argv){
 //
 //   tdata.close();
 //
-//   basic traing cycle for xor over 100000 times
+//   basic traing cycle for xor over 1000000 times
   for(unsigned i = 0; i < 1000000; ++i){
     //get input
     input_vals.clear();
@@ -87,6 +92,7 @@ int main(int argc, char ** argv){
       cout << setprecision(8) << fixed << result_vals[i] << " ";
     }
     cout << endl;
+    cout << "Your Error: " << setprecision(8) << fixed << net.get_error() << endl;
   }
 
   return 0;
