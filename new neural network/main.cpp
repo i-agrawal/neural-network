@@ -29,5 +29,7 @@ int main() {
 
 	nn.train(X, y, 3000, 1);
 
+	nn.save("ann");
+
 	return 0;
 }

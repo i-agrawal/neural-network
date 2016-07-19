@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <math.h>
 #include <random>
+#include <fstream>
 #include <time.h>
 
 using namespace std;
@@ -24,6 +25,12 @@ public:
 	void train(Mat<double> &, Mat<double> &, int, double,					//trains the neural network given by the input data
 			   double training = 0.6, double cv = 0.2, double test = 0.2);	//and the output data provided by the user
 																			//will split data into training set, cv set, and test set
+
+	void save(const string &);		//saves the neural network in 2 .mat files
+									//one is a nametheta.mat and the other it namelayers.mat
+
+	static ann load(const string &);//loads the neural network from 2 .mat files
+									//one is a nametheta.mat and the other it namelayers.mat
 
 private:
 	//private data

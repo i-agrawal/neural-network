@@ -179,9 +179,9 @@ double ann::costfunction(Mat<double> &itheta, Mat<double> &X, Mat<double> &y, Ma
 //estimates the parameters theta that produce the minimum cost
 //given the X and y from the function train
 //and the cost produced by the costfunction
-Mat<double> ann::gradientdescent(Mat<double> &itheta, Mat<double> &input, Mat<double> &output, int iters, double lambda) {
+Mat<double> ann::gradientdescent(Mat<double> &itheta, Mat<double> &input, Mat<double> &output, int iters, double lambda, double alpha) {
 	Mat<double> grad, ctheta = itheta;		//set current theta to the initial theta
-	double cost, alpha = 1;					//intialize cost and set alpha to 1
+	double cost;							//intialize cost
 	for (unsigned i = 0; i < iters; i++) {	//for each iteration
 		cost = costfunction(ctheta, input, output, grad, lambda); 	//calculate the cost and gradient
 		ctheta = ctheta - alpha * grad;								//make ctheta equal to new theta
@@ -217,4 +217,30 @@ field<Mat<double> > ann::unrolledtheta(Mat<double> &m, Mat<int> &layers) {
 		thetaf(i, 0) = reshape(thetaf(i, 0), layers(0, i+1), layers(0, i)+1);	//reshape the vectorised version into a matrix
 	}
 	return thetaf;	//return the reshaped matrices
+}
+
+//saves the neural network in 2 .mat files
+//one is a nametheta.mat and the other it namelayers.mat
+void ann::save(const string &name) {
+	string tname = name + "theta.mat";	//get name of theta mat file
+	theta.save(tname); 					//save it
+	string lname = name + "layers.mat";	//get name of layers mat file
+	layer_sizes.save(lname);			//save it
+}
+
+ann ann::load(const string &name) {
+	string tname = name + "theta.mat";	//get name of theta mat file
+	string lname = name + "layers.mat";	//get name of layers mat file
+	Mat<double> th;						//variable to store theta information
+	Mat<int> la;						//variable to store layer information
+	bool succeeded = th.load(tname) && la.load(lname);	//bool to store if it succeeded or not
+	if (!succeeded) {	//if it didnt succeed
+		cout << "--(!) Failed to Load Artifical Neural Network (!)--" << endl;	//log failure
+		la.clear();																//clear layers
+		la << 1 << 1 << endr;													//make a 1 input 1 output layers mat
+		return ann(la);															//return the defulat 1 1 ann
+	}
+	ann ret(la);		//otherwise initialize ann using layers
+	ret.theta = th;		//save theta
+	return ret;			//return the loaded ann
 }
