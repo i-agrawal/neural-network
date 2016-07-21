@@ -29,7 +29,7 @@ ann::ann(Mat<int> &layers, double epsilon) {
 //trains the neural network given by the input data
 //and the output data provided by the user
 //will split data into training set, cv set, and test set
-void ann::train(Mat<double> &X, Mat<double> &y, int iters, double lambda, double training, double cv, double test) {
+void ann::train(Mat<double> &X, Mat<double> &y, int iters, double lambda, double alpha, double training, double cv, double test) {
 	assert(training + cv + test == 1);		//make sure the partitioning equals 1
 	default_random_engine generator;		//make an engine to perform uniform random distribution
 	uniform_real_distribution<double> distribution(0.0, 1.0); //create a uniform real distribtuion form 0 to 1
@@ -54,7 +54,7 @@ void ann::train(Mat<double> &X, Mat<double> &y, int iters, double lambda, double
 
 	clock_t t;			//create clock to find time elapsed
 	t = clock();		//get time before starts
-	theta = gradientdescent(theta, trainingsetX, trainingsetY, iters, lambda);	//train the network through gradient descent
+	theta = gradientdescent(theta, trainingsetX, trainingsetY, iters, lambda, alpha);	//train the network through gradient descent
 	t = clock() - t;	//get time difference
 	cout << "Time Elapsed Training\t\t\t| " << static_cast<double>(t) / CLOCKS_PER_SEC << " Seconds" << endl;	//log the time elapsed
 

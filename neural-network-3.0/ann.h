@@ -22,7 +22,7 @@ public:
 	Mat<double> feed(Mat<double> &);	//function that predicts output given
 										//an input matrix of the features
 
-	void train(Mat<double> &, Mat<double> &, int, double,					//trains the neural network given by the input data
+	void train(Mat<double> &, Mat<double> &, int, double, double alpha = 1,	//trains the neural network given by the input data
 			   double training = 0.6, double cv = 0.2, double test = 0.2);	//and the output data provided by the user
 																			//will split data into training set, cv set, and test set
 
