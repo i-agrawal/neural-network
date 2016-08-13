@@ -1,5 +1,5 @@
 # neural-network
-### Neural Network implementation in C++
+Neural Network implementation in C++
 Recently Updated Using Matrices.
 Matrix definitions handled by template library Armadillo.
 Matrix math handled by linked BLAS implementation.
