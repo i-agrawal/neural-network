@@ -5,7 +5,7 @@ Matrix definitions handled by template library Armadillo.<br />
 Matrix math handled by linked BLAS implementation.<br />
 
 #### Currently Compiles With Following BLAS implementations:
-Mac   : Accelerate Framework
+Mac   : Accelerate Framework<br/>
 Linux : BLAS/LAPACK, OpenBLAS, MKL, AMCL
 
 Notes:<br />
