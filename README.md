@@ -1,4 +1,5 @@
 # neural-network
+#### Description
 Neural Network implementation in C++.<br />
 Recently Updated Using Matrices.<br />
 Matrix definitions handled by template library Armadillo.<br />
