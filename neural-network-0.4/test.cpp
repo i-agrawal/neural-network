@@ -27,15 +27,13 @@ int main(int argc, char ** argv) {
 
 
 	unsigned arr[3] = {2, 3, 1};
-	double lambda = 0.1, alpha = 10, cost;
+	double lambda = 0.1, alpha = 10;
+	unsigned maxiters = 1000;
 	neuralnetwork ann(3, arr);
 
 	clock_t t = clock();
 
-	for (i = 0; i != 1000; i++) {
-		cost = ann.costfunction(in, out, lambda, alpha);
-		std::cout << "Training Iteration " << i << " | " << cost << std::endl;
-	}
+	ann.batchgradientdescent(in, out, maxiters, alpha, lambda);
 
 	hyp = ann.feedforward(in);
 
