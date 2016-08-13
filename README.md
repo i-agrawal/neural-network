@@ -1,8 +1,8 @@
 # neural-network
-Neural Network implementation in C++:
-Recently Updated Using Matrices
-Matrix definitions handled by template library Armadillo
-Matrix math handled by linked BLAS implementation
+Neural Network implementation in C++:\n
+Recently Updated Using Matrices\n
+Matrix definitions handled by template library Armadillo\n
+Matrix math handled by linked BLAS implementation\n
 
 Currently Compiles With Following BLAS implementations:
 Mac OSX   : Accelerate Framework
